@@ -61,23 +61,27 @@ class _MyWidgetState extends State<FoodBank> {
                     onPressed: () {
                       Navigator.of(context).pop();
                     })),
-            body: Center(
-                child: Column(
-              children: [
-                Text('${widget.passedAddress}'),
-                Text('${widget.passedUrls}'),
-                ListView(
-                  shrinkWrap: true,
-                  children: needsList.map((need) {
-                  return Container(
-                    child: Text(need),
-                    margin: EdgeInsets.all(5),
-                    padding: EdgeInsets.all(8),
-                    color: Colors.green[100],
+            body: ListView.separated(
+                itemCount: needsList.length,
+                separatorBuilder: (BuildContext context, index) => const Divider(),
+                itemBuilder:(BuildContext context, index) {
+                  return ListTile(
+                    title: Text(needsList[index]),
+                    tileColor: Colors.blue[100],
                   );
-                      }).toList()
-                    )
-              ],
-            ))));
+                })
+            // ListView(
+            //   shrinkWrap: true,
+            //   children: needsList.map((need) {
+            //   return Container(
+            //     child: Text(need),
+            //     margin: EdgeInsets.all(5),
+            //     padding: EdgeInsets.all(8),
+            //     color: Colors.green[100],
+            //   );
+            //       }).toList()
+            //     )
+
+            ));
   }
 }
