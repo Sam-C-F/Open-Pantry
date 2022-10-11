@@ -4,7 +4,6 @@ import 'package:open_pantry/api.dart';
 import 'package:open_pantry/models/model.dart';
 import 'package:open_pantry/pages/single_foodbank.dart';
 import 'package:http/http.dart' as http;
-import 'package:snapshot/snapshot.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -39,7 +38,9 @@ class _HomeScreenState extends State<HomeScreen> {
   build(context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("User List"),
+          title: Text("Available Foodbanks",
+          style: TextStyle(fontSize: 50)),
+          centerTitle: true,
         ),
         body: ListView.builder(
             itemCount: users.length,

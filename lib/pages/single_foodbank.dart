@@ -1,6 +1,7 @@
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
+import 'package:sticky_headers/sticky_headers.dart';
 
 class FoodBank extends StatefulWidget {
   FoodBank(
@@ -54,22 +55,41 @@ class _MyWidgetState extends State<FoodBank> {
         title: 'FoodBank',
         home: Scaffold(
             appBar: AppBar(
-                title: Text('${widget.passedName}'),
+                title: Text('${widget.passedName}',
+                style: TextStyle(fontSize: 50)
+                ),
                 centerTitle: true,
                 leading: ElevatedButton(
                     child: Text('<'),
                     onPressed: () {
                       Navigator.of(context).pop();
                     })),
-            body: ListView.separated(
-                itemCount: needsList.length,
-                separatorBuilder: (BuildContext context, index) => const Divider(),
-                itemBuilder:(BuildContext context, index) {
-                  return ListTile(
-                    title: Text(needsList[index]),
-                    tileColor: Colors.blue[100],
-                  );
-                })
-            ));
+            body: Column(children: [
+              Container(
+                color:Color.fromARGB(255, 180, 240, 182),
+                margin: const EdgeInsets.all(8),
+                width: 2000.0, 
+                child:
+               Column(children: [
+                Text('\n${widget.passedUrls}\n',
+                style: TextStyle(fontSize: 20)),
+                Text('${widget.passedAddress}',
+                style: TextStyle(fontSize: 15)),
+              ],
+              )
+              ),
+      
+                 Expanded(
+                  child: ListView.separated(
+                      itemCount: needsList.length,
+                      separatorBuilder: (BuildContext context, index) =>
+                          const Divider(),
+                      itemBuilder: (BuildContext context, index) {
+                        return ListTile(
+                          title: Text(needsList[index]),
+                          tileColor: Colors.blue[100],
+                        );
+                      }))
+            ])));
   }
 }
