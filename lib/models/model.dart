@@ -14,15 +14,16 @@
 // }
 
 class User {
-  String name, postcode;
+  String name, postcode, slug;
 
-  User(this.name, this.postcode);
+  User(this.name, this.postcode, this.slug);
 
   User.fromJson(Map json)
       : name = json['name'],
-        postcode = json['postcode'];
+        postcode = json['postcode'],
+        slug = json['slug'];
 
   Map toJson() {
-    return {'name': name, 'postcode': postcode};
+    return {'name': name, 'postcode': postcode, 'slug': slug};
   }
 }
