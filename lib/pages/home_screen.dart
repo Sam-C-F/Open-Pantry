@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:open_pantry/model.dart';
+import 'package:open_pantry/api.dart';
+import 'package:open_pantry/models/model.dart';
 import 'package:open_pantry/pages/single_foodbank.dart';
 import 'package:http/http.dart' as http;
 import 'package:snapshot/snapshot.dart';
@@ -32,44 +33,73 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  Future<List<User>> usersFuture = getUsers();
+  var users = <User>[];
+  _getUsers() {
+    API.getUsers().then((response) {
+      setState(() {
+        print(response);
+        Iterable list = json.decode(response.body);
+        users = list.map((model) => User.fromJson(model)).toList();
+      });
+    });
+  }
 
-  static Future<List<User>> getUsers() async {
-    const url = "https://www.givefood.org.uk/api/2/foodbanks/";
-    final response = await http.get(Uri.parse(url));
-    final body = json.decode(response.body);
-    return body.map<User>(User.fromJson).toList();
+  initState() {
+    super.initState();
+    _getUsers();
+  }
+
+  dispose() {
+    super.dispose();
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
+  build(context) {
+    return Scaffold(
         appBar: AppBar(
-          title: const Text("Open Pantry"),
-          centerTitle: true,
+          title: Text("User List"),
         ),
-        body: Center(
-            child: FutureBuilder<List<User>>(
-                future: usersFuture,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    final users = snapshot.data!;
-                    return buildUsers(users);
-                  } else {
-                    return const Text("No user data");
-                  }
-                })),
-      );
-
-  Widget buildUsers(List<User> users) => ListView.builder(
-      itemCount: users.length,
-      itemBuilder: (context, index) {
-        final user = users[index];
-
-        return Card(
-          child: ListTile(
-            title: Text(user.name),
-            subtitle: Text(user.district),
-          ),
-        );
-      });
+        body: ListView.builder(
+          itemCount: users.length,
+          itemBuilder: (context, index) {
+            return ListTile(
+              title: Text(users[index].name),
+              subtitle: Text(users[index].postcode),
+            );
+          },
+        ));
+  }
 }
+
+  // Widget buildUsers(List<User> users) => ListView.builder(
+  //     itemCount: users.length,
+  //     itemBuilder: (context, index) {
+  //       final user = users[index];
+
+  //       return Card(
+  //         child: ListTile(
+  //           title: Text(user.name),
+  //           subtitle: Text(user.postcode),
+  //         ),
+  //       );
+  //     });
+  // @override
+  // Widget build(BuildContext context) => Scaffold(
+  //       appBar: AppBar(
+  //         title: const Text("Open Pantry"),
+  //         centerTitle: true,
+  //       ),
+  //       body: Center(
+  //           child: FutureBuilder<List<User>>(
+  //               future: usersFuture,
+  //               builder: (context, snapshot) {
+  //                 print(snapshot.data);
+  //                 if (snapshot.hasData) {
+  //                   final users = snapshot.data!;
+  //                   return buildUsers(users);
+  //                 } else {
+  //                   return const Text("No user data");
+  //                 }
+  //               })),
+  //     );
+

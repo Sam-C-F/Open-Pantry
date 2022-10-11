@@ -18,3 +18,4 @@ class SingleFoodbank extends StatelessWidget {
     );
   }
 }
+
