@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:open_pantry/api.dart';
 import 'package:open_pantry/models/model.dart';
 import 'package:open_pantry/pages/single_foodbank.dart';
@@ -15,10 +17,14 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   var users = <User>[];
-// get location from device or from drop down menu id no location provided
-// then async await:
-  _getUsers() {
-    API.getUsers().then((response) {
+
+  _getUsers() async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+
+    var currentLocation = ('${position.latitude},${position.longitude}');
+
+    API.getUsersByLocation(currentLocation).then((response) {
       setState(() {
         Iterable list = json.decode(response.body);
         users = list.map((model) {
