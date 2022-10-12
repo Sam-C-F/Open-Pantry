@@ -4,6 +4,10 @@
         android:label="open_pantry"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+
+    <meta-data android:name="com.google.android.geo.API_KEY"
+    android:value="AIzaSyCvOExLJkynU7svCwBHKI8uHoAUj3kPwGA"/>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
