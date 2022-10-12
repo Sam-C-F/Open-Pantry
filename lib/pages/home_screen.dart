@@ -5,6 +5,8 @@ import 'package:open_pantry/models/model.dart';
 import 'package:open_pantry/pages/single_foodbank.dart';
 import 'package:http/http.dart' as http;
 
+
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -14,8 +16,10 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   var users = <User>[];
+// get location from device or from drop down menu id no location provided
+// then async await:
   _getUsers() {
-    API.getUsers().then((response) {
+    API.getUsersByLocation(/*location*/).then((response) {
       setState(() {
         Iterable list = json.decode(response.body);
         users = list.map((model) {
