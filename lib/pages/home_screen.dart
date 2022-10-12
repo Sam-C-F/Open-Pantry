@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:html';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:open_pantry/api.dart';
 import 'package:open_pantry/models/model.dart';
@@ -16,9 +17,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   var users = <User>[];
-/* get location from device or from drop down menu id no location provided
- then async await:
- */
+
   _getUsers() async {
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
@@ -33,6 +32,14 @@ class _HomeScreenState extends State<HomeScreen> {
         }).toList();
       });
     });
+  }
+
+  late GoogleMapController mapController;
+
+  final LatLng _center = const LatLng(45.521563, -122.677433);
+
+  void _onMapCreated(GoogleMapController controller) {
+    mapController = controller;
   }
 
   initState() {
@@ -51,37 +58,48 @@ class _HomeScreenState extends State<HomeScreen> {
           title: Text("Available Foodbanks", style: TextStyle(fontSize: 50)),
           centerTitle: true,
         ),
-        body: ListView.builder(
-            itemCount: users.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                  title: Text(users[index].name),
-                  subtitle: Text(users[index].postcode),
-                  trailing: ElevatedButton(
-                      child: const Text('Go'),
-                      onPressed: () async {
-                        String id = users[index].slug;
-                        var url = Uri.parse(
-                            'https://www.givefood.org.uk/api/2/foodbank/$id/');
-                        var response = await http.get(url);
-                        var data = jsonDecode(response.body);
-                        String name = data['name'];
-                        String address = data['address'];
-                        String latLng = data['lat_lng'];
-                        String urls = data['urls']['homepage'];
-                        String needs = data['need']['needs'];
+        body: Column(children: [
+          Expanded(
+            child: GoogleMap(
+              onMapCreated: _onMapCreated,
+              initialCameraPosition:
+                  CameraPosition(target: _center, zoom: 11.0),
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+                itemCount: users.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                      title: Text(users[index].name),
+                      subtitle: Text(users[index].postcode),
+                      trailing: ElevatedButton(
+                          child: const Text('Go'),
+                          onPressed: () async {
+                            String id = users[index].slug;
+                            var url = Uri.parse(
+                                'https://www.givefood.org.uk/api/2/foodbank/$id/');
+                            var response = await http.get(url);
+                            var data = jsonDecode(response.body);
+                            String name = data['name'];
+                            String address = data['address'];
+                            String latLng = data['lat_lng'];
+                            String urls = data['urls']['homepage'];
+                            String needs = data['need']['needs'];
 
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => FoodBank(
-                                    passedName: name,
-                                    passedAddress: address,
-                                    passedLatLng: latLng,
-                                    passedUrls: urls,
-                                    passedNeeds: needs)));
-                      }));
-            }));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => FoodBank(
+                                        passedName: name,
+                                        passedAddress: address,
+                                        passedLatLng: latLng,
+                                        passedUrls: urls,
+                                        passedNeeds: needs)));
+                          }));
+                }),
+          )
+        ]));
   }
 }
 
