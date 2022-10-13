@@ -18,25 +18,38 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   var users = <User>[];
 
-  _getUsers() async {
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-
-    var currentLocation = ('${position.latitude},${position.longitude}');
-
-    API.getUsersByLocation(currentLocation).then((response) {
-      setState(() {
-        Iterable list = json.decode(response.body);
-        users = list.map((model) {
-          return User.fromJson(model);
-        }).toList();
+  _getUsers() {
+    getLocation().then((currentLocation) {
+      API.getUsersByLocation(currentLocation).then((response) {
+        setState(() {
+          Iterable list = json.decode(response.body);
+          users = list.map((model) {
+            return User.fromJson(model);
+          }).toList();
+        });
       });
     });
   }
 
   late GoogleMapController mapController;
 
-  final LatLng _center = const LatLng(45.521563, -122.677433);
+  // _mapLocation() async {
+  //   var currentLocation = await getLocation();
+  //   var splitLocation = currentLocation.split(",");
+  //   var lat = double.parse(splitLocation[0]);
+  //   var lon = double.parse(splitLocation[1]);
+  //   final LatLng returnLocation = LatLng(lat, lon);
+  //   return returnLocation;
+  // }
+
+  Future<LatLng> _mapLocation() async {
+    var currentLocation = await getLocation();
+    var splitLocation = currentLocation.split(",");
+    var lat = double.parse(splitLocation[0]);
+    var lon = double.parse(splitLocation[1]);
+    final LatLng returnLocation = LatLng(lat, lon);
+    return returnLocation;
+  }
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
@@ -51,6 +64,12 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
+  var userLocationInput = TextEditingController();
+
+  getPostcode() {
+    print(userLocationInput.text);
+  }
+
   @override
   build(context) {
     return Scaffold(
@@ -59,12 +78,38 @@ class _HomeScreenState extends State<HomeScreen> {
           centerTitle: true,
         ),
         body: Column(children: [
-          Expanded(
-            child: GoogleMap(
-              onMapCreated: _onMapCreated,
-              initialCameraPosition:
-                  CameraPosition(target: _center, zoom: 11.0),
-            ),
+          Column(
+            children: [
+              TextField(
+                controller: userLocationInput,
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: "Enter your postcode..."),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  getPostcode();
+                },
+                child: Text('Submit'),
+              ),
+            ],
+          ),
+          FutureBuilder<LatLng>(
+            future: _mapLocation(),
+            builder: (BuildContext context, AsyncSnapshot<LatLng> snapshot) {
+              if (snapshot.hasData) {
+                return Expanded(
+                  child: GoogleMap(
+                    onMapCreated: _onMapCreated,
+                    initialCameraPosition: CameraPosition(
+                        target: snapshot.requireData, zoom: 11.0),
+                  ),
+                );
+              } else {
+                return Text('Loading...');
+              }
+            },
           ),
           Expanded(
             child: ListView.builder(
@@ -102,7 +147,6 @@ class _HomeScreenState extends State<HomeScreen> {
         ]));
   }
 }
-
 
 // Widget buildUsers(List<User> users) => ListView.builder(
 //     itemCount: users.length,
