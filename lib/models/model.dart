@@ -12,6 +12,7 @@
 //         district: json["politics"]["district"],
 //       );
 // }
+import 'package:geolocator/geolocator.dart';
 
 class User {
   String name, postcode, slug;
@@ -26,4 +27,13 @@ class User {
   Map toJson() {
     return {'name': name, 'postcode': postcode, 'slug': slug};
   }
+}
+
+getLocation() async {
+  Position position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high);
+
+  var currentLocation = ('${position.latitude},${position.longitude}');
+
+  return currentLocation;
 }
