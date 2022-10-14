@@ -33,15 +33,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   late GoogleMapController mapController;
 
-  // _mapLocation() async {
-  //   var currentLocation = await getLocation();
-  //   var splitLocation = currentLocation.split(",");
-  //   var lat = double.parse(splitLocation[0]);
-  //   var lon = double.parse(splitLocation[1]);
-  //   final LatLng returnLocation = LatLng(lat, lon);
-  //   return returnLocation;
-  // }
-
   Future<LatLng> _mapLocation() async {
     var currentLocation = await getLocation();
     var splitLocation = currentLocation.split(",");
@@ -66,10 +57,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   var userLocationInput = TextEditingController();
 
-  getPostcode() {
-    print(userLocationInput.text);
-  }
-
   @override
   build(context) {
     return Scaffold(
@@ -83,13 +70,22 @@ class _HomeScreenState extends State<HomeScreen> {
               TextField(
                 controller: userLocationInput,
                 keyboardType: TextInputType.text,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: "Enter your postcode..."),
               ),
               ElevatedButton(
-                onPressed: () {
-                  getPostcode();
+                onPressed: () async {
+                  var postcode = userLocationInput.text;
+                  var url =
+                      Uri.parse("https://api.postcodes.io/postcodes/$postcode");
+                  var response = await http.get(url);
+                  var data = jsonDecode(response.body);
+                  var lat = data['result']['latitude'];
+                  var lon = data['result']['longitude'];
+                  final LatLng postcodeLocation = LatLng(lat, lon);
+
+                  print(postcodeLocation);
                 },
                 child: Text('Submit'),
               ),
