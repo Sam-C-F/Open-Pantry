@@ -5,29 +5,33 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:open_pantry/api.dart';
 import 'package:open_pantry/models/model.dart';
-import 'package:open_pantry/pages/postcode_home_screen.dart';
 import 'package:open_pantry/pages/single_foodbank.dart';
 import 'package:http/http.dart' as http;
+import 'home_screen.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class PostcodeHomeScreen extends StatefulWidget {
+  const PostcodeHomeScreen({
+    Key? key,
+    required this.postcodeDataForList,
+    required this.postcodeLocationLatLng,
+  }) : super(key: key);
+  final LatLng postcodeLocationLatLng;
+  final String postcodeDataForList;
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<PostcodeHomeScreen> createState() => _MyWidgetState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _MyWidgetState extends State<PostcodeHomeScreen> {
   var users = <User>[];
 
   _getUsers() {
-    getLocation().then((currentLocation) {
-      API.getUsersByLocation(currentLocation).then((response) {
-        setState(() {
-          Iterable list = json.decode(response.body);
-          users = list.map((model) {
-            return User.fromJson(model);
-          }).toList();
-        });
+    API.getUsersByLocation(widget.postcodeDataForList).then((response) {
+      setState(() {
+        Iterable list = json.decode(response.body);
+        users = list.map((model) {
+          return User.fromJson(model);
+        }).toList();
       });
     });
   }
@@ -86,6 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   var lon = data['result']['longitude'];
                   final postcodeDataForList = ('$lat, $lon');
                   final LatLng postcodeLocationLatLng = LatLng(lat, lon);
+                  Navigator.pop(context);
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -106,7 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: GoogleMap(
                     onMapCreated: _onMapCreated,
                     initialCameraPosition: CameraPosition(
-                        target: snapshot.requireData, zoom: 11.0),
+                        target: widget.postcodeLocationLatLng, zoom: 11.0),
                   ),
                 );
               } else {
@@ -150,35 +155,3 @@ class _HomeScreenState extends State<HomeScreen> {
         ]));
   }
 }
-
-// Widget buildUsers(List<User> users) => ListView.builder(
-//     itemCount: users.length,
-//     itemBuilder: (context, index) {
-//       final user = users[index];
-
-//       return Card(
-//         child: ListTile(
-//           title: Text(user.name),
-//           subtitle: Text(user.postcode),
-//         ),
-//       );
-//     });
-// @override
-// Widget build(BuildContext context) => Scaffold(
-//       appBar: AppBar(
-//         title: const Text("Open Pantry"),
-//         centerTitle: true,
-//       ),
-//       body: Center(
-//           child: FutureBuilder<List<User>>(
-//               future: usersFuture,
-//               builder: (context, snapshot) {
-//                 print(snapshot.data);
-//                 if (snapshot.hasData) {
-//                   final users = snapshot.data!;
-//                   return buildUsers(users);
-//                 } else {
-//                   return const Text("No user data");
-//                 }
-//               })),
-//     );
