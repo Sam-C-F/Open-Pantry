@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:open_pantry/api.dart';
 import 'package:open_pantry/models/model.dart';
+import 'package:open_pantry/main.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -54,8 +55,11 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   build(context) {
     return Scaffold(
+        backgroundColor: Color(0xffFDF5E6),
         appBar: AppBar(
-          title: Text("Available Foodbanks", style: TextStyle(fontSize: 50)),
+          title: Text("Available Foodbanks",
+              style: TextStyle(fontSize: 50, color: Color(0xff79b465))),
+          backgroundColor: Color(0xffFDF5E6),
           centerTitle: true,
         ),
         body: Column(children: [
@@ -65,6 +69,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 controller: userLocationInput,
                 keyboardType: TextInputType.text,
                 decoration: const InputDecoration(
+                    filled: true,
+                    fillColor: Color(0xffFFFFFF),
                     border: OutlineInputBorder(),
                     hintText: "Enter your postcode..."),
               ),
