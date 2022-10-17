@@ -1,12 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:open_pantry/api.dart';
 import 'package:open_pantry/models/model.dart';
-import 'package:open_pantry/pages/postcode_home_screen.dart';
-import 'package:open_pantry/pages/single_foodbank.dart';
-import 'package:http/http.dart' as http;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -73,23 +69,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     hintText: "Enter your postcode..."),
               ),
               ElevatedButton(
-                onPressed: () async {
-                  var postcode = userLocationInput.text;
-                  var url =
-                      Uri.parse("https://api.postcodes.io/postcodes/$postcode");
-                  var response = await http.get(url);
-                  var data = jsonDecode(response.body);
-                  var lat = data['result']['latitude'];
-                  var lon = data['result']['longitude'];
-                  final postcodeDataForList = ('$lat, $lon');
-                  final LatLng postcodeLocationLatLng = LatLng(lat, lon);
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => PostcodeHomeScreen(
-                                postcodeLocationLatLng: postcodeLocationLatLng,
-                                postcodeDataForList: postcodeDataForList,
-                              )));
+                onPressed: () {
+                  submitPostcode(userLocationInput, context);
                 },
                 child: Text('Submit'),
               ),
