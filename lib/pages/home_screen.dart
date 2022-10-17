@@ -102,7 +102,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ]),
             builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
               if (snapshot.hasData) {
-                // print(makeMarkerList(users));
                 return Expanded(
                   child: Column(
                     children: [
@@ -120,8 +119,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                   markerId: MarkerId(user.name),
                                   position: foodBankLatLng,
                                   infoWindow: InfoWindow(
-                                    title: user.name,
-                                  ),
+                                      title: user.name,
+                                      snippet: user.postcode,
+                                      onTap: () {
+                                        toFoodBankPage(user.slug, context);
+                                      }),
                                 );
                               })))),
                       Expanded(
@@ -135,25 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       child: const Text('Go'),
                                       onPressed: () async {
                                         String id = users[index].slug;
-                                        var url = Uri.parse(
-                                            'https://www.givefood.org.uk/api/2/foodbank/$id/');
-                                        var response = await http.get(url);
-                                        var data = jsonDecode(response.body);
-                                        String name = data['name'];
-                                        String address = data['address'];
-                                        String latLng = data['lat_lng'];
-                                        String urls = data['urls']['homepage'];
-                                        String needs = data['need']['needs'];
-
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) => FoodBank(
-                                                    passedName: name,
-                                                    passedAddress: address,
-                                                    passedLatLng: latLng,
-                                                    passedUrls: urls,
-                                                    passedNeeds: needs)));
+                                        toFoodBankPage(id, context);
                                       }));
                             }),
                       )
