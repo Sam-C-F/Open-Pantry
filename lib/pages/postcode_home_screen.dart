@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
@@ -105,10 +104,22 @@ class _MyWidgetState extends State<PostcodeHomeScreen> {
           ),
           Expanded(
             child: GoogleMap(
-              onMapCreated: _onMapCreated,
-              initialCameraPosition: CameraPosition(
-                  target: widget.postcodeLocationLatLng, zoom: 11.0),
-            ),
+                onMapCreated: _onMapCreated,
+                initialCameraPosition: CameraPosition(
+                    target: widget.postcodeLocationLatLng, zoom: 11.0),
+                markers: Set<Marker>.of(users.map((user) {
+                  var splitLocation = user.latLng.split(",");
+                  var lat = double.parse(splitLocation[0]);
+                  var lon = double.parse(splitLocation[1]);
+                  var foodBankLatLng = LatLng(lat, lon);
+                  return Marker(
+                    markerId: MarkerId(user.name),
+                    position: foodBankLatLng,
+                    infoWindow: InfoWindow(
+                      title: user.name,
+                    ),
+                  );
+                }))),
           ),
           Expanded(
             child: ListView.builder(
