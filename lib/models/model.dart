@@ -1,31 +1,23 @@
-// class User {
-//   final String name;
-//   final String district;
-
-//   const User({
-//     required this.name,
-//     required this.district,
-//   });
-
-//   static User fromJson(json) => User(
-//         name: json["name"],
-//         district: json["politics"]["district"],
-//       );
-// }
 import 'package:geolocator/geolocator.dart';
 
 class User {
-  String name, postcode, slug;
+  String name, postcode, slug, latLng;
 
-  User(this.name, this.postcode, this.slug);
+  User(this.name, this.postcode, this.slug, this.latLng);
 
   User.fromJson(Map json)
       : name = json['name'],
         postcode = json['postcode'],
-        slug = json['slug'];
+        slug = json['slug'],
+        latLng = json['lat_lng'];
 
   Map toJson() {
-    return {'name': name, 'postcode': postcode, 'slug': slug};
+    return {
+      'name': name,
+      'postcode': postcode,
+      'slug': slug,
+      'latitude': latLng
+    };
   }
 }
 

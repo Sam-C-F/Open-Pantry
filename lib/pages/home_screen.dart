@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
@@ -17,19 +16,15 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  var users = <User>[];
+  List<User> users = <User>[];
 
-  _getUsers() {
-    getLocation().then((currentLocation) {
-      API.getUsersByLocation(currentLocation).then((response) {
-        setState(() {
-          Iterable list = json.decode(response.body);
-          users = list.map((model) {
-            return User.fromJson(model);
-          }).toList();
-        });
-      });
-    });
+  Future<List> _getUsers() async {
+    var currentLocation = await getLocation();
+    var response = await API.getUsersByLocation(currentLocation);
+    Iterable list = json.decode(response.body);
+    return users = list.map((model) {
+      return User.fromJson(model);
+    }).toList();
   }
 
   late GoogleMapController mapController;
@@ -40,6 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
     var lat = double.parse(splitLocation[0]);
     var lon = double.parse(splitLocation[1]);
     final LatLng returnLocation = LatLng(lat, lon);
+
     return returnLocation;
   }
 
@@ -47,11 +43,12 @@ class _HomeScreenState extends State<HomeScreen> {
     mapController = controller;
   }
 
+  @override
   initState() {
     super.initState();
-    _getUsers();
   }
 
+  @override
   dispose() {
     super.dispose();
   }
@@ -98,15 +95,69 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ],
           ),
-          FutureBuilder<LatLng>(
-            future: _mapLocation(),
-            builder: (BuildContext context, AsyncSnapshot<LatLng> snapshot) {
+          FutureBuilder<List>(
+            future: Future.wait([
+              _mapLocation(),
+              _getUsers(),
+            ]),
+            builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
               if (snapshot.hasData) {
+                // print(makeMarkerList(users));
                 return Expanded(
-                  child: GoogleMap(
-                    onMapCreated: _onMapCreated,
-                    initialCameraPosition: CameraPosition(
-                        target: snapshot.requireData, zoom: 11.0),
+                  child: Column(
+                    children: [
+                      Expanded(
+                          child: GoogleMap(
+                              onMapCreated: _onMapCreated,
+                              initialCameraPosition: CameraPosition(
+                                  target: snapshot.requireData[0], zoom: 11.0),
+                              markers: Set<Marker>.of(users.map((user) {
+                                var splitLocation = user.latLng.split(",");
+                                var lat = double.parse(splitLocation[0]);
+                                var lon = double.parse(splitLocation[1]);
+                                var foodBankLatLng = LatLng(lat, lon);
+                                return Marker(
+                                  markerId: MarkerId(user.name),
+                                  position: foodBankLatLng,
+                                  infoWindow: InfoWindow(
+                                    title: user.name,
+                                  ),
+                                );
+                              })))),
+                      Expanded(
+                        child: ListView.builder(
+                            itemCount: users.length,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                  title: Text(users[index].name),
+                                  subtitle: Text(users[index].postcode),
+                                  trailing: ElevatedButton(
+                                      child: const Text('Go'),
+                                      onPressed: () async {
+                                        String id = users[index].slug;
+                                        var url = Uri.parse(
+                                            'https://www.givefood.org.uk/api/2/foodbank/$id/');
+                                        var response = await http.get(url);
+                                        var data = jsonDecode(response.body);
+                                        String name = data['name'];
+                                        String address = data['address'];
+                                        String latLng = data['lat_lng'];
+                                        String urls = data['urls']['homepage'];
+                                        String needs = data['need']['needs'];
+
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => FoodBank(
+                                                    passedName: name,
+                                                    passedAddress: address,
+                                                    passedLatLng: latLng,
+                                                    passedUrls: urls,
+                                                    passedNeeds: needs)));
+                                      }));
+                            }),
+                      )
+                    ],
                   ),
                 );
               } else {
@@ -114,71 +165,6 @@ class _HomeScreenState extends State<HomeScreen> {
               }
             },
           ),
-          Expanded(
-            child: ListView.builder(
-                itemCount: users.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                      title: Text(users[index].name),
-                      subtitle: Text(users[index].postcode),
-                      trailing: ElevatedButton(
-                          child: const Text('Go'),
-                          onPressed: () async {
-                            String id = users[index].slug;
-                            var url = Uri.parse(
-                                'https://www.givefood.org.uk/api/2/foodbank/$id/');
-                            var response = await http.get(url);
-                            var data = jsonDecode(response.body);
-                            String name = data['name'];
-                            String address = data['address'];
-                            String latLng = data['lat_lng'];
-                            String urls = data['urls']['homepage'];
-                            String needs = data['need']['needs'];
-
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => FoodBank(
-                                        passedName: name,
-                                        passedAddress: address,
-                                        passedLatLng: latLng,
-                                        passedUrls: urls,
-                                        passedNeeds: needs)));
-                          }));
-                }),
-          )
         ]));
   }
 }
-
-// Widget buildUsers(List<User> users) => ListView.builder(
-//     itemCount: users.length,
-//     itemBuilder: (context, index) {
-//       final user = users[index];
-
-//       return Card(
-//         child: ListTile(
-//           title: Text(user.name),
-//           subtitle: Text(user.postcode),
-//         ),
-//       );
-//     });
-// @override
-// Widget build(BuildContext context) => Scaffold(
-//       appBar: AppBar(
-//         title: const Text("Open Pantry"),
-//         centerTitle: true,
-//       ),
-//       body: Center(
-//           child: FutureBuilder<List<User>>(
-//               future: usersFuture,
-//               builder: (context, snapshot) {
-//                 print(snapshot.data);
-//                 if (snapshot.hasData) {
-//                   final users = snapshot.data!;
-//                   return buildUsers(users);
-//                 } else {
-//                   return const Text("No user data");
-//                 }
-//               })),
-//     );
