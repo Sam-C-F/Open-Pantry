@@ -103,21 +103,12 @@ class _MyWidgetState extends State<PostcodeHomeScreen> {
               ),
             ],
           ),
-          FutureBuilder<LatLng>(
-            future: _mapLocation(),
-            builder: (BuildContext context, AsyncSnapshot<LatLng> snapshot) {
-              if (snapshot.hasData) {
-                return Expanded(
-                  child: GoogleMap(
-                    onMapCreated: _onMapCreated,
-                    initialCameraPosition: CameraPosition(
-                        target: widget.postcodeLocationLatLng, zoom: 11.0),
-                  ),
-                );
-              } else {
-                return Text('Loading...');
-              }
-            },
+          Expanded(
+            child: GoogleMap(
+              onMapCreated: _onMapCreated,
+              initialCameraPosition: CameraPosition(
+                  target: widget.postcodeLocationLatLng, zoom: 11.0),
+            ),
           ),
           Expanded(
             child: ListView.builder(
