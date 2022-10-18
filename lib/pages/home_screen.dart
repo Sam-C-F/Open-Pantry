@@ -170,19 +170,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                             fontWeight: FontWeight.bold,
                                             color: Color(0xff4F4f4f))),
                                     trailing: ElevatedButton(
-                                        child: const Text('-->',
-                                            style: TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.bold,
-                                                color: Color(0xff4F4f4f))),
+                                        child: const Icon(Icons.arrow_forward),
+                                            style: ElevatedButton.styleFrom(
+                                                backgroundColor: Color(0xff4F4f4f)),
                                         onPressed: () async {
                                           String id = users[index].slug;
                                           toFoodBankPage(id, context);
                                         },
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor:
-                                                Color(0xffFDF5E6))),
-                                  ),
+                                        ),
+                                                ),
+                              
                                   SizedBox(height: 5)
                                 ],
                               );

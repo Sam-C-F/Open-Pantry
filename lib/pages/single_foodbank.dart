@@ -54,13 +54,30 @@ class _MyWidgetState extends State<FoodBank> {
     return MaterialApp(
         title: 'FoodBank',
         home: Scaffold(
+          backgroundColor: Color(0xffFDF5E6),
             appBar: AppBar(
-                title: Text('${widget.passedName}',
-                style: TextStyle(fontSize: 50)
+                backgroundColor: Color(0xffFDF5E6),
+                title: Row(children: [
+                  Expanded(
+                    flex: 1,
+                    child: Image.asset('images/picwish.png'),),
+                    Expanded(
+                      flex: 4,
+                      child: Text('${widget.passedName}',
+                style: TextStyle(
+                  fontFamily: 'Josefin',
+                  fontSize: 50,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xff79b465))
                 ),
-                centerTitle: true,
+                )
+                 ,
+                ],),
                 leading: ElevatedButton(
-                    child: Text('<'),
+                    child: Icon(Icons.arrow_back),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xff79b465)
+                    ),
                     onPressed: () {
                       Navigator.of(context).pop();
                     })),
