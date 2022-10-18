@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:js_util';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:open_pantry/api.dart';
@@ -75,11 +76,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     hintText: "Enter your postcode..."),
               ),
               ElevatedButton(
-                onPressed: () {
-                  submitPostcode(userLocationInput, context);
-                },
-                child: Text('Submit'),
-              ),
+                  onPressed: () {
+                    submitPostcode(userLocationInput, context);
+                  },
+                  child: Text(
+                    'Submit',
+                    style: TextStyle(color: Color(0xffFDF5E6), fontSize: 20),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xff79b465))),
             ],
           ),
           FutureBuilder<List>(
@@ -113,19 +118,56 @@ class _HomeScreenState extends State<HomeScreen> {
                                       }),
                                 );
                               })))),
+                      Container(
+                          alignment: Alignment.centerLeft,
+                          margin: EdgeInsets.fromLTRB(15, 10, 10, 10),
+                          padding: EdgeInsets.all(3),
+                          child: Text(
+                            'Foodbanks:',
+                            style: TextStyle(
+                                color: Color(0xff79b465),
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold),
+                          )),
                       Expanded(
                         child: ListView.builder(
                             itemCount: users.length,
                             itemBuilder: (context, index) {
-                              return ListTile(
-                                  title: Text(users[index].name),
-                                  subtitle: Text(users[index].postcode),
-                                  trailing: ElevatedButton(
-                                      child: const Text('Go'),
-                                      onPressed: () async {
-                                        String id = users[index].slug;
-                                        toFoodBankPage(id, context);
-                                      }));
+                              return Column(
+                                key: Key('$index'),
+                                children: [
+                                  ListTile(
+                                    minVerticalPadding: 10.0,
+                                    horizontalTitleGap: 10.0,
+                                    contentPadding: EdgeInsets.all(10),
+                                    tileColor: Color(0xff79b465),
+                                    title: Text(users[index].name,
+                                        style: TextStyle(
+                                            fontSize: 25,
+                                            fontWeight: FontWeight.bold,
+                                            color: Color(0xffFDF5E6))),
+                                    subtitle: Text(users[index].postcode,
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            color: Color(0xff4F4f4f))),
+                                    trailing: ElevatedButton(
+                                        child: const Text('-->',
+                                            style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                                color: Color(0xff4F4f4f))),
+                                        onPressed: () async {
+                                          String id = users[index].slug;
+                                          toFoodBankPage(id, context);
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor:
+                                                Color(0xffFDF5E6))),
+                                  ),
+                                  SizedBox(height: 5)
+                                ],
+                              );
                             }),
                       )
                     ],
