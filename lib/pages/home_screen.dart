@@ -58,33 +58,50 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
         backgroundColor: Color(0xffFDF5E6),
         appBar: AppBar(
-          title: Text("Available Foodbanks",
-              style: TextStyle(fontSize: 50, color: Color(0xff79b465))),
           backgroundColor: Color(0xffFDF5E6),
-          centerTitle: true,
+          title: Row(children: [
+            Expanded(
+              flex: 1,
+              child: Image.asset('images/picwish.png')),
+            Expanded(
+              flex: 4,
+              child: Text("Open Pantry",
+                  style: TextStyle(
+                      fontFamily: 'Josefin',
+                      fontWeight: FontWeight.bold,
+                      fontSize: 50,
+                      color: Color(0xff79b465))),
+            )
+          ]),
         ),
         body: Column(children: [
-          Column(
+          Row(
             children: [
-              TextField(
-                controller: userLocationInput,
-                keyboardType: TextInputType.text,
-                decoration: const InputDecoration(
-                    filled: true,
-                    fillColor: Color(0xffFFFFFF),
-                    border: OutlineInputBorder(),
-                    hintText: "Enter your postcode..."),
+              Expanded(
+                flex: 3,
+                child: TextField(
+                  controller: userLocationInput,
+                  keyboardType: TextInputType.text,
+                  decoration: const InputDecoration(
+                      filled: true,
+                      fillColor: Color(0xffFFFFFF),
+                      border: OutlineInputBorder(),
+                      hintText: "Enter your postcode..."),
+                ),
               ),
-              ElevatedButton(
-                  onPressed: () {
-                    submitPostcode(userLocationInput, context);
-                  },
-                  child: Text(
-                    'Submit',
-                    style: TextStyle(color: Color(0xffFDF5E6), fontSize: 20),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xff79b465))),
+              Expanded(
+                flex: 1,
+                child: ElevatedButton(
+                    onPressed: () {
+                      submitPostcode(userLocationInput, context);
+                    },
+                    child: Text(
+                      'Submit',
+                      style: TextStyle(color: Color(0xffFDF5E6), fontSize: 20),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xff79b465))),
+              )
             ],
           ),
           FutureBuilder<List>(
@@ -119,12 +136,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                 );
                               })))),
                       Container(
-                          alignment: Alignment.centerLeft,
-                          margin: EdgeInsets.fromLTRB(15, 10, 10, 10),
-                          padding: EdgeInsets.all(3),
+                          color: Color(0xFFFDF5E6),
+                          alignment: Alignment.center,
+                          padding: EdgeInsets.all(6),
                           child: Text(
-                            'Foodbanks:',
+                            'Your Local Foodbanks',
                             style: TextStyle(
+                                fontFamily: 'Josefin',
                                 color: Color(0xff79b465),
                                 fontSize: 30,
                                 fontWeight: FontWeight.bold),
