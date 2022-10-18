@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:js_util';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:open_pantry/api.dart';
@@ -62,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
           title: Row(children: [
             Expanded(
               flex: 1,
-              child: Image.asset('images/picwish.png')),
+              child: Image.asset('assets/images/picwish.png')),
             Expanded(
               flex: 4,
               child: Text("Open Pantry",

@@ -17,7 +17,7 @@ class LoadingScreen extends StatelessWidget {
     return Scaffold(
         backgroundColor: Color(0xffFDF5E6),
         body: Column(children: [
-          Center(child: Image.asset('images/picwish.png')),
+          Center(child: Image.asset('assets/images/picwish.png')),
           Expanded(
               child: Text('\n\nBought to you by\n.Team{} Productions',
                   style: TextStyle(

@@ -60,7 +60,7 @@ class _MyWidgetState extends State<FoodBank> {
                 title: Row(children: [
                   Expanded(
                     flex: 1,
-                    child: Image.asset('images/picwish.png'),),
+                    child: Image.asset('assets/images/picwish.png'),),
                     Expanded(
                       flex: 4,
                       child: Text('${widget.passedName}',
