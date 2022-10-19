@@ -47,7 +47,6 @@ _fbLocation(passedLatLng) {
 
 _url(passedUrls) {
   var splitUrl = passedUrls.split("//");
-  print(splitUrl[1]);
   return splitUrl[1];
 }
 
@@ -141,14 +140,25 @@ class _MyWidgetState extends State<FoodBank> {
                 color: Color(0xfffdf5e6),
                 child: Row(children: [
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(_url(widget.passedUrls),
+                      textAlign: TextAlign.left,
                           style: TextStyle(
                               fontFamily: 'Josefin',
                               color: Color(0xff79b465),
                               fontSize: 25,
-                              fontWeight: FontWeight.bold))
+                              fontWeight: FontWeight.bold)
+                          )
                     ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text('contact number',
+                      textAlign: TextAlign.right,
+                      )
+                    ]
                   )
                 ]),
               ),
