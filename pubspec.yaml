@@ -83,6 +83,9 @@ flutter:
     - family: Josefin
       fonts:
         - asset: assets/fonts/titlefont.ttf
+    - family: Staaliches
+      fonts: 
+        - asset: assets/fonts/Staatliches-Regular.ttf
 
     # - family: Trajan Pro
     #   fonts:

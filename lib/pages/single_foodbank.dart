@@ -36,8 +36,7 @@ void _onMapCreated(GoogleMapController controller) {
 //   return latlon;
 // }
 
-
-  _fbLocation(passedLatLng)  {
+_fbLocation(passedLatLng) {
   var currentLocation = passedLatLng;
   var splitLocation = currentLocation.split(",");
   var lat = double.parse(splitLocation[0]);
@@ -82,15 +81,12 @@ class _MyWidgetState extends State<FoodBank> {
             backgroundColor: Color(0xffFDF5E6),
             appBar: AppBar(
                 backgroundColor: Color(0xffFDF5E6),
-
                 title: Row(
                   children: [
                     Expanded(
                       flex: 1,
                       child: Image.asset('assets/images/picwish.png'),
                     ),
-
-
                     Expanded(
                       flex: 4,
                       child: Text('${widget.passedName}',
@@ -112,31 +108,30 @@ class _MyWidgetState extends State<FoodBank> {
             body: Column(children: [
               Row(children: [
                 Container(
-                  
                   child: Expanded(
-                  // color:Color.fromARGB(255, 180, 240, 182),
-                  // margin: const EdgeInsets.all(8),
-                  // width: 2000.0,
-                  child: Column(
-                    children: [
-                      Text('\n${widget.passedUrls}\n',
-                          style: TextStyle(fontSize: 20)),
-                      Text('${widget.passedAddress}',
-                          style: TextStyle(fontSize: 15)),
-                    ],
+                    // color:Color.fromARGB(255, 180, 240, 182),
+                    // margin: const EdgeInsets.all(8),
+                    // width: 2000.0,
+                    child: Column(
+                      children: [
+                        Text('\n${widget.passedUrls}\n',
+                            style: TextStyle(fontSize: 20)),
+                        Text('${widget.passedAddress}',
+                            style: TextStyle(fontSize: 15)),
+                      ],
+                    ),
                   ),
-                ),),
+                ),
                 Container(
-                  constraints: const BoxConstraints(maxHeight: 300, maxWidth: 300),
-                  child: Expanded(
-                  child: GoogleMap(
-                    onMapCreated: _onMapCreated,
-                    
-                    initialCameraPosition:
-                        CameraPosition(target: _fbLocation(widget.passedLatLng)),
-                  ),)
-
-                )
+                    constraints:
+                        const BoxConstraints(maxHeight: 300, maxWidth: 300),
+                    child: Expanded(
+                      child: GoogleMap(
+                        onMapCreated: _onMapCreated,
+                        initialCameraPosition: CameraPosition(
+                            target: _fbLocation(widget.passedLatLng)),
+                      ),
+                    ))
               ]),
               Container(
                   color: Color(0xff79b465),
