@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:js_util';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:open_pantry/api.dart';
@@ -59,6 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Color(0xffFDF5E6),
         appBar: AppBar(
           backgroundColor: Color(0xffFDF5E6),
+
           title: Container(
             child: 
             Image.asset('assets/images/grouplogo.png',  scale: 2)),

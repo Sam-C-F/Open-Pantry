@@ -82,12 +82,15 @@ class _MyWidgetState extends State<FoodBank> {
             backgroundColor: Color(0xffFDF5E6),
             appBar: AppBar(
                 backgroundColor: Color(0xffFDF5E6),
+
                 title: Row(
                   children: [
                     Expanded(
                       flex: 1,
                       child: Image.asset('assets/images/picwish.png'),
                     ),
+
+
                     Expanded(
                       flex: 4,
                       child: Text('${widget.passedName}',
