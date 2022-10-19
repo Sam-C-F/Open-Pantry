@@ -112,8 +112,12 @@ class _MyWidgetState extends State<FoodBank> {
                         fontWeight: FontWeight.bold),
                   )),
               Container(
-                  child: Expanded(
-                child: GoogleMap(
+                color: Color(0xFFFDF5E6),
+                  child: SizedBox(
+                    width: 400.0,
+                    height: 250.0,
+                child:
+                 GoogleMap(
                     onMapCreated: _onMapCreated,
                     initialCameraPosition: CameraPosition(
                         target: _fbLocation(widget.passedLatLng), zoom: 15.0),
