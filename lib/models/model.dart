@@ -28,6 +28,11 @@ class User {
 }
 
 getLocation() async {
+  bool isLocationServiceEnabled = await Geolocator.isLocationServiceEnabled();
+  await Geolocator.checkPermission();
+  if (isLocationServiceEnabled == false) {
+    await Geolocator.requestPermission();
+  }
   Position position = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high);
 

@@ -58,11 +58,21 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Color(0xffFDF5E6),
         appBar: AppBar(
           backgroundColor: Color(0xffFDF5E6),
-
-          title: Container(
-            child: 
-            Image.asset('assets/images/grouplogo.png',  scale: 2)),
-          ),
+          title: Row(children: [
+            Expanded(
+              flex: 1,
+              child: Image.asset('assets/images/picwish.png')),
+            Expanded(
+              flex: 4,
+              child: Text("Open Pantry",
+                  style: TextStyle(
+                      fontFamily: 'Josefin',
+                      fontWeight: FontWeight.bold,
+                      fontSize: 50,
+                      color: Color(0xff79b465))),
+            )
+          ]),
+        ),
         body: Column(children: [
           Row(
             children: [
