@@ -45,6 +45,12 @@ _fbLocation(passedLatLng) {
   return returnLocation;
 }
 
+_url(passedUrls) {
+  var splitUrl = passedUrls.split("//");
+  print(splitUrl[1]);
+  return splitUrl[1];
+}
+
 // class _FoodBankNeedsState extends State<FoodBank> {
 //   final _saved = <String>{};
 //   final _suggestions = <String>[];
@@ -76,7 +82,7 @@ class _MyWidgetState extends State<FoodBank> {
   Widget build(BuildContext context) {
     final List<String> needsList = widget.passedNeeds.split('\n');
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
+        debugShowCheckedModeBanner: false,
         title: 'FoodBank',
         home: Scaffold(
             backgroundColor: Color(0xffFDF5E6),
@@ -91,7 +97,6 @@ class _MyWidgetState extends State<FoodBank> {
                   ],
                 ),
                 leading: ElevatedButton(
-                  
                     child: Icon(Icons.home, color: Color(0xff79b465)),
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xffFDF5E6)),
@@ -112,26 +117,41 @@ class _MyWidgetState extends State<FoodBank> {
                         fontWeight: FontWeight.bold),
                   )),
               Container(
-                color: Color(0xFFFDF5E6),
+                  color: Color(0xFFFDF5E6),
                   child: SizedBox(
                     width: 1000.0,
                     height: 250.0,
-                child:
-                 GoogleMap(
-                    onMapCreated: _onMapCreated,
-                    initialCameraPosition: CameraPosition(
-                        target: _fbLocation(widget.passedLatLng), zoom: 15.0),
-                    markers: Set<Marker>.of([
-                      Marker(
-                        markerId: MarkerId(widget.passedName),
-                        position: _fbLocation(widget.passedLatLng),
-                        infoWindow: InfoWindow(
-                          title: widget.passedName,
-                          snippet: widget.passedAddress,
-                        ),
-                      )
-                    ])),
-              )),
+                    child: GoogleMap(
+                        onMapCreated: _onMapCreated,
+                        initialCameraPosition: CameraPosition(
+                            target: _fbLocation(widget.passedLatLng),
+                            zoom: 15.0),
+                        markers: Set<Marker>.of([
+                          Marker(
+                            markerId: MarkerId(widget.passedName),
+                            position: _fbLocation(widget.passedLatLng),
+                            infoWindow: InfoWindow(
+                              title: widget.passedName,
+                              snippet: widget.passedAddress,
+                            ),
+                          )
+                        ])),
+                  )),
+              Container(
+                color: Color(0xfffdf5e6),
+                child: Row(children: [
+                  Column(
+                    children: [
+                      Text(_url(widget.passedUrls),
+                          style: TextStyle(
+                              fontFamily: 'Josefin',
+                              color: Color(0xff79b465),
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold))
+                    ],
+                  )
+                ]),
+              ),
               Container(
                   color: Color(0xFFFDF5E6),
                   alignment: Alignment.center,
@@ -139,6 +159,7 @@ class _MyWidgetState extends State<FoodBank> {
                   margin: EdgeInsets.only(bottom: 4),
                   child: Text(
                     'Current Requested Items',
+                    textAlign: TextAlign.left,
                     style: TextStyle(
                         fontFamily: 'Josefin',
                         color: Color(0xff79b465),
