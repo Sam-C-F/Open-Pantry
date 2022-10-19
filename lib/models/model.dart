@@ -7,22 +7,24 @@ import 'package:http/http.dart' as http;
 import '../pages/postcode_home_screen.dart';
 
 class User {
-  String name, postcode, slug, latLng;
+  String name, postcode, slug, latLng, phone;
 
-  User(this.name, this.postcode, this.slug, this.latLng);
+  User(this.name, this.postcode, this.slug, this.latLng, this.phone);
 
   User.fromJson(Map json)
       : name = json['name'],
         postcode = json['postcode'],
         slug = json['slug'],
-        latLng = json['lat_lng'];
+        latLng = json['lat_lng'],
+        phone = json['phone'];
 
   Map toJson() {
     return {
       'name': name,
       'postcode': postcode,
       'slug': slug,
-      'latitude': latLng
+      'latitude': latLng,
+      'phone': phone,
     };
   }
 }
@@ -50,6 +52,7 @@ toFoodBankPage(id, context) async {
   String latLng = data['lat_lng'];
   String urls = data['urls']['homepage'];
   String needs = data['need']['needs'];
+  String phone = data['phone'];
 
   Navigator.push(
       context,
@@ -59,7 +62,8 @@ toFoodBankPage(id, context) async {
               passedAddress: address,
               passedLatLng: latLng,
               passedUrls: urls,
-              passedNeeds: needs)));
+              passedNeeds: needs,
+              passedPhone: phone)));
 }
 
 submitPostcode(userLocationInput, context) async {
