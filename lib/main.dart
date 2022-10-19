@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:open_pantry/pages/home_screen.dart';
 import 'package:open_pantry/pages/loading_screen.dart';
 
 void main() {

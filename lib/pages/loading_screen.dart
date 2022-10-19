@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'dart:async';
 
 import 'package:open_pantry/pages/home_screen.dart';
@@ -20,8 +18,9 @@ class LoadingScreen extends StatelessWidget {
           Center(child: Image.asset('assets/images/picwish.png')),
           Expanded(
               child: Text('\n\nBrought to you by\n.Team{} Productions',
+                  textAlign: TextAlign.center,
                   style: TextStyle(
-                      fontFamily: 'Josefin',
+                      fontFamily: 'Staaliches',
                       fontWeight: FontWeight.bold,
                       fontSize: 40,
                       color: Color(0xff79b465))))
