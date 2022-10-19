@@ -114,7 +114,7 @@ class _MyWidgetState extends State<FoodBank> {
               Container(
                 color: Color(0xFFFDF5E6),
                   child: SizedBox(
-                    width: 400.0,
+                    width: 1000.0,
                     height: 250.0,
                 child:
                  GoogleMap(
