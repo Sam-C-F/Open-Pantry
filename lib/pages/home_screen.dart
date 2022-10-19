@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:open_pantry/api.dart';
 import 'package:open_pantry/models/model.dart';
-import 'package:open_pantry/main.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -57,18 +56,12 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
         backgroundColor: Color(0xffFDF5E6),
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: Color(0xffFDF5E6),
           title: Row(children: [
-            Expanded(flex: 1, child: Image.asset('assets/images/picwish.png')),
             Expanded(
-              flex: 4,
-              child: Text("Open Pantry",
-                  style: TextStyle(
-                      fontFamily: 'Josefin',
-                      fontWeight: FontWeight.bold,
-                      fontSize: 50,
-                      color: Color(0xff79b465))),
-            )
+              child: Image.asset('assets/images/grouplogo.png', scale: 2),
+            ),
           ]),
         ),
         body: Container(
@@ -193,7 +186,30 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     );
                   } else {
-                    return Text('Loading...');
+                    return Container(
+                        height: 500,
+                        padding: EdgeInsets.all(75),
+                        child: Column(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(25),
+                              alignment: Alignment.center,
+                              child: CircularProgressIndicator(
+                                  color: Colors.green),
+                            ),
+                            Container(
+                              padding: EdgeInsets.all(25),
+                              alignment: Alignment.center,
+                              child: Text('Loading your local foodbanks...',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontFamily: 'Staaliches',
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 25,
+                                      color: Color(0xff79b465))),
+                            ),
+                          ],
+                        ));
                   }
                 },
               ),
