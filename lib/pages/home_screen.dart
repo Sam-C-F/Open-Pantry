@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:open_pantry/api.dart';
 import 'package:open_pantry/models/model.dart';
+import 'dart:async';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -137,7 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               color: Color(0xFFFDF5E6),
                               alignment: Alignment.center,
                               padding: EdgeInsets.fromLTRB(0, 25, 0, 15),
-                              child: Text(
+                              child: SelectableText(
                                 'Your Local Foodbanks',
                                 style: TextStyle(
                                     fontFamily: 'Staaliches',
@@ -166,12 +167,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                         horizontalTitleGap: 10.0,
                                         contentPadding: EdgeInsets.all(10),
                                         tileColor: Color(0xffFDF5E6),
-                                        title: Text(users[index].name,
+                                        title: SelectableText(users[index].name,
                                             style: TextStyle(
                                                 fontSize: 25,
                                                 fontWeight: FontWeight.bold,
                                                 color: Color(0xffFDF5E6))),
-                                        subtitle: Text(users[index].postcode,
+                                        subtitle: SelectableText(
+                                            users[index].postcode,
                                             style: TextStyle(
                                                 fontSize: 20,
                                                 fontWeight: FontWeight.bold,

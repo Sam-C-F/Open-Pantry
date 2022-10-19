@@ -73,7 +73,7 @@ class _MyWidgetState extends State<FoodBank> {
                       color: Color(0xFFFDF5E6),
                       alignment: Alignment.center,
                       padding: EdgeInsets.all(6),
-                      child: Text(
+                      child: SelectableText(
                         '${widget.passedName}',
                         style: TextStyle(
                             fontFamily: 'Staaliches',
@@ -123,7 +123,7 @@ class _MyWidgetState extends State<FoodBank> {
                               }),
                       )),
                       Expanded(
-                          child: Text(widget.passedPhone,
+                          child: SelectableText(widget.passedPhone,
                               textAlign: TextAlign.right,
                               style: TextStyle(
                                 fontFamily: 'Staaliches',
@@ -137,7 +137,7 @@ class _MyWidgetState extends State<FoodBank> {
                       alignment: Alignment.center,
                       padding: EdgeInsets.fromLTRB(25, 6, 6, 6),
                       margin: EdgeInsets.only(bottom: 4),
-                      child: Text(
+                      child: SelectableText(
                         'Current Requested Items',
                         textAlign: TextAlign.left,
                         style: TextStyle(
@@ -154,7 +154,7 @@ class _MyWidgetState extends State<FoodBank> {
                           itemBuilder: (BuildContext context, index) {
                             return ListTile(
                               tileColor: Color.fromARGB(255, 126, 184, 107),
-                              title: Text(needsList[index],
+                              title: SelectableText(needsList[index],
                                   style: TextStyle(
                                     color: Color(0xff4F4f4f),
                                     fontWeight: FontWeight.bold,

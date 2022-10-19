@@ -132,7 +132,7 @@ class _MyWidgetState extends State<PostcodeHomeScreen> {
                   color: Color(0xFFFDF5E6),
                   alignment: Alignment.center,
                   padding: EdgeInsets.fromLTRB(0, 25, 0, 15),
-                  child: Text(
+                  child: SelectableText(
                     'Your Local Foodbanks',
                     style: TextStyle(
                         fontFamily: 'Staaliches',
@@ -141,38 +141,47 @@ class _MyWidgetState extends State<PostcodeHomeScreen> {
                         fontWeight: FontWeight.w900),
                   )),
               Expanded(
-                child: ListView.builder(
-                    itemCount: users.length,
-                    itemBuilder: (context, index) {
-                      return Column(
-                        children: [
-                          ListTile(
-                              minVerticalPadding: 10.0,
-                              horizontalTitleGap: 10.0,
-                              contentPadding: EdgeInsets.all(10),
-                              tileColor: Color(0xff79b465),
-                              title: Text(users[index].name,
-                                  style: TextStyle(
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.bold,
-                                      color: Color(0xffFDF5E6))),
-                              subtitle: Text(users[index].postcode,
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: Color(0xff4F4f4f))),
-                              trailing: ElevatedButton(
-                                  child: Text('GO'),
-                                  style: ElevatedButton.styleFrom(
-                                      backgroundColor: Color(0xff4F4f4f)),
-                                  onPressed: () async {
-                                    String id = users[index].slug;
-                                    toFoodBankPage(id, context);
-                                  })),
-                          SizedBox(height: 5)
-                        ],
-                      );
-                    }),
+                child: Container(
+                  color: Color(0xff79b465),
+                  child: ListView.separated(
+                      itemCount: users.length,
+                      separatorBuilder: (BuildContext context, int index) =>
+                          const Divider(
+                            height: 10,
+                            thickness: 10,
+                            color: Color(0xffFDF5E6),
+                          ),
+                      itemBuilder: (context, index) {
+                        return Column(
+                          children: [
+                            ListTile(
+                                minVerticalPadding: 10.0,
+                                horizontalTitleGap: 10.0,
+                                contentPadding: EdgeInsets.all(10),
+                                tileColor: Color(0xffFDF5E6),
+                                title: SelectableText(users[index].name,
+                                    style: TextStyle(
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(0xffFDF5E6))),
+                                subtitle: SelectableText(users[index].postcode,
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(0xff4F4f4f))),
+                                trailing: ElevatedButton(
+                                    child: Text('GO'),
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: Color(0xff4F4f4f)),
+                                    onPressed: () async {
+                                      String id = users[index].slug;
+                                      toFoodBankPage(id, context);
+                                    })),
+                            SizedBox(height: 5)
+                          ],
+                        );
+                      }),
+                ),
               )
             ])));
   }
