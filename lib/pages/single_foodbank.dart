@@ -96,6 +96,7 @@ class _MyWidgetState extends State<FoodBank> {
                     Expanded(
                       child:
                           Image.asset('assets/images/grouplogo.png', scale: 2),
+
                     ),
                   ],
                 ),

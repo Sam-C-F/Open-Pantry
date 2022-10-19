@@ -19,7 +19,7 @@ class LoadingScreen extends StatelessWidget {
         body: Column(children: [
           Center(child: Image.asset('assets/images/picwish.png')),
           Expanded(
-              child: Text('\n\nBought to you by\n.Team{} Productions',
+              child: Text('\n\nBrought to you by\n.Team{} Productions',
                   style: TextStyle(
                       fontFamily: 'Josefin',
                       fontWeight: FontWeight.bold,
