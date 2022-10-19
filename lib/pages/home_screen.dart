@@ -69,6 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
             margin: const EdgeInsets.only(bottom: 10),
             child: Column(children: [
               Container(
+                color: Color(0xffFDF5E6),
                 margin: const EdgeInsets.fromLTRB(0, 5, 0, 15),
                 child: Row(
                   children: [
@@ -145,8 +146,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                     fontWeight: FontWeight.w900),
                               )),
                           Expanded(
-                            child: ListView.builder(
+                              child: Container(
+                            color: Color(0xff79b465),
+                            child: ListView.separated(
                                 itemCount: users.length,
+                                separatorBuilder:
+                                    (BuildContext context, int index) =>
+                                        const Divider(
+                                          height: 10,
+                                          thickness: 10,
+                                          color: Color(0xffFDF5E6),
+                                        ),
                                 itemBuilder: (context, index) {
                                   return Column(
                                     key: Key('$index'),
@@ -155,7 +165,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         minVerticalPadding: 10.0,
                                         horizontalTitleGap: 10.0,
                                         contentPadding: EdgeInsets.all(10),
-                                        tileColor: Color(0xff79b465),
+                                        tileColor: Color(0xffFDF5E6),
                                         title: Text(users[index].name,
                                             style: TextStyle(
                                                 fontSize: 25,
@@ -181,7 +191,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ],
                                   );
                                 }),
-                          )
+                          )),
                         ],
                       ),
                     );
