@@ -1,8 +1,10 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class FoodBank extends StatefulWidget {
   FoodBank(
@@ -11,13 +13,15 @@ class FoodBank extends StatefulWidget {
       required this.passedAddress,
       required this.passedLatLng,
       required this.passedUrls,
-      required this.passedNeeds})
+      required this.passedNeeds,
+      required this.passedPhone})
       : super(key: key);
   final String passedName;
   final String passedAddress;
   final String passedLatLng;
   final String passedUrls;
   final String passedNeeds;
+  final String passedPhone;
   @override
   State<FoodBank> createState() => _MyWidgetState();
 }
@@ -139,27 +143,30 @@ class _MyWidgetState extends State<FoodBank> {
               Container(
                 color: Color(0xfffdf5e6),
                 child: Row(children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(_url(widget.passedUrls),
-                      textAlign: TextAlign.left,
+                  Expanded(
+                      child: new RichText(
+                    text: new TextSpan(
+                        text: _url(widget.passedUrls),
+                        style: TextStyle(
+                            fontFamily: 'Josefin',
+                            color: Color(0xff79b465),
+                            fontSize: 25,
+                            decoration: TextDecoration.underline,
+                            fontWeight: FontWeight.bold),
+                        recognizer: new TapGestureRecognizer()
+                          ..onTap = () {
+                            // ignore: deprecated_member_use
+                            launch(widget.passedUrls);
+                          }),
+                  )),
+                  Expanded(
+                      child: Text(widget.passedPhone,
+                          textAlign: TextAlign.right,
                           style: TextStyle(
                               fontFamily: 'Josefin',
                               color: Color(0xff79b465),
                               fontSize: 25,
-                              fontWeight: FontWeight.bold)
-                          )
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text('contact number',
-                      textAlign: TextAlign.right,
-                      )
-                    ]
-                  )
+                              fontWeight: FontWeight.bold)))
                 ]),
               ),
               Container(
