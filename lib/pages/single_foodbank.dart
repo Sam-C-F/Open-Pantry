@@ -149,7 +149,7 @@ class _MyWidgetState extends State<FoodBank> {
                         text: _url(widget.passedUrls),
                         style: TextStyle(
                             fontFamily: 'Josefin',
-                            color: Color(0xff79b465),
+                            color: Color(0xff4F4f4f),
                             fontSize: 25,
                             decoration: TextDecoration.underline,
                             fontWeight: FontWeight.bold),
@@ -164,7 +164,7 @@ class _MyWidgetState extends State<FoodBank> {
                           textAlign: TextAlign.right,
                           style: TextStyle(
                               fontFamily: 'Josefin',
-                              color: Color(0xff79b465),
+                              color: Color(0xff4F4f4f),
                               fontSize: 25,
                               fontWeight: FontWeight.bold)))
                 ]),
